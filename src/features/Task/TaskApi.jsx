@@ -2,7 +2,7 @@ import apiSlice from "../API/apiSlice";
 
 const TaskApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    
+
     addTask: builder.mutation({
       query: (data) => ({
         method: "POST",
@@ -41,6 +41,18 @@ const TaskApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tasks"],
     }),
 
+    updateStatus: builder.mutation({
+      query: ({ id }) => ({
+        method: "PATCH",
+        url: `/tasks/${id}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { status: "Complete" }
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
+
     deleteTask: builder.mutation({
       query: (id) => ({
         method: "DELETE",
@@ -56,5 +68,6 @@ export const {
   useGetTasksQuery,
   useGetTaskQuery,
   useUpdateTaskMutation,
+  useUpdateStatusMutation,
   useDeleteTaskMutation,
 } = TaskApi;
