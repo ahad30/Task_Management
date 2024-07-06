@@ -23,13 +23,17 @@ const AddTask = () => {
   useEffect(() => {
     if (isLoading) {
       toast.loading(<p>Loading...</p>, { id: 1 });
-    } else if (isSuccess && data?.insertedId) {
+    } 
+    
+    if (isSuccess && data?.insertedId) {
       reset();
       setIsCompleted('');
       setIsIncomplete('');
       toast.success('Task Added Successfully', { id: 1 });
       navigate('/')
-    } else if (isError) {
+    } 
+    
+    if (isError) {
       toast.error('Failed to add task', { id: 1 });
     }
   }, [isLoading, isSuccess, isError, data, reset]);

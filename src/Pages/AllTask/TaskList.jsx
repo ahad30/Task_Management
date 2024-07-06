@@ -7,17 +7,27 @@ import { toast } from 'react-hot-toast';
 import { Button, Spinner } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import EditTask from './EditTask';
 
 const TaskList = () => {
   const { data: tasksData, isLoading: tasksIsLoading } = useGetTasksQuery();
   const [deleteTask, { isLoading: deleteIsLoading, isError: deleteIsError, isSuccess: deleteIsSuccess, error: deleteError }] = useDeleteTaskMutation();
   const [tasks, setTasks] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+const [selectedTask , setSelectedTask] = useState({})
+
 
   useEffect(() => {
     if (tasksData) {
       setTasks(tasksData);
     }
   }, [tasksData]);
+
+
+  const handleModalEditInfo = (selectedTask) => {
+    setSelectedTask(selectedTask)
+    setModalIsOpen(true);
+  };
 
   const handleDelete = async (_id) => {
     Swal.fire({
@@ -35,17 +45,20 @@ const TaskList = () => {
     });
   };
 
+
   useEffect(() => {
     if (deleteIsLoading) {
       toast.loading("Deleting task...", { id: 1 });
     }
-    if (deleteIsError) {
-      toast.error(deleteError?.data?.message || 'Failed to delete task', { id: 1 });
-    }
     if (deleteIsSuccess) {
       toast.success('Task deleted successfully', { id: 1 });
     }
-  }, [deleteIsLoading, deleteIsError, deleteIsSuccess, deleteError]);
+
+    if (deleteIsError) {
+      toast.error(deleteError?.data?.message || 'Failed to delete task', { id: 1 });
+    }
+  }, [deleteIsSuccess , deleteIsLoading]);
+
 
   const columns = [
     {
@@ -71,11 +84,9 @@ const TaskList = () => {
       name: "Actions",
       cell: (row) => (
         <div>
-         <Link to={`/editTask/${row?._id}`}>
-         <button>
-            <FaEdit size={20} className="mr-2" />
+          <button className='' onClick={() => handleModalEditInfo(row)}>
+            <FaEdit size={20}></FaEdit>
           </button>
-         </Link>
           <button onClick={() => handleDelete(row._id)}>
             <RiDeleteBin4Line size={20} />
           </button>
@@ -102,10 +113,15 @@ const TaskList = () => {
     </div>
       <DataTable
         columns={columns}
-        data={tasks}
+        data={tasksData}
         responsive
         keyField="id"
       />
+          <EditTask
+          selectedTask={selectedTask}
+          modalIsOpen={modalIsOpen}
+          setModalIsOpen={setModalIsOpen}
+        />
     </div>
   );
 };
