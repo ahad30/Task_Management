@@ -1,6 +1,7 @@
 ### Project Overview
 
 This project is a task management application built using the MERN stack (MongoDB, Express.js, React, Node.js). The application allows users to create, read, update, and delete tasks. It also includes functionality for marking tasks as completed. The frontend is styled with Tailwind CSS and Material Tailwind, and state management is handled using Redux.
+
 Deploy: https://task-management-ahad.netlify.app/
 
 ### Technologies Used
