@@ -30,7 +30,7 @@ This project is a task management application built using the MERN stack (MongoD
    ```env
    DB_USER=<your_db_user>
    DB_PASS=<your_db_password>
-   PORT=5000
+ 
    ```
 
 4. Start the backend server:
